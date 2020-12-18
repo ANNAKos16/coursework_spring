@@ -24,6 +24,9 @@
     </div>
 </template>
 <script>
+
+import AdminDataService  from "../services/AdminDataService";
+
 export default {
     
     name: "adminPopup",
@@ -50,7 +53,22 @@ export default {
         },
 
         postLogin(){
-            
+            AdminDataService.findUser(this.password)
+            .then(response =>{
+                console.log(response.data);
+                if(response.data[0].password==this.password){
+                    this.logflag=false;
+                    console.log("trolololo");
+                    this.$router.push('/adminpanel')
+                }
+                else{
+                    this.logflag=true;
+                }
+            })
+            .catch(e =>{
+                this.logflag=true;
+                console.log(e);
+            });
         },
     }
 }

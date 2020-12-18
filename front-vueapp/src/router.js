@@ -4,6 +4,7 @@ import Router from "vue-router";
 import mainPage from './components/main_page/mainPage.vue'
 import newPage from './components/newPage.vue'
 import adminPopup from './components/adminPopup.vue'
+import adminPage from './components/adminPage.vue'
 
 Vue.use(Router);
 
@@ -41,6 +42,12 @@ export default new Router({
       path: '/admin',
 			component: adminPopup,
       name: "adminPopup"
+    },
+    
+    {
+      path: '/adminpanel',
+			component: adminPage,
+      name: "adminPage"
 		},
 
   ]
