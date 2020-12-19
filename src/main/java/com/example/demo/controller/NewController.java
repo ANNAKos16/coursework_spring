@@ -31,6 +31,17 @@ public class NewController {
     @Autowired
     NewsRepository newsRepository;
 
+    @PostMapping("/news")
+  public ResponseEntity<News> createNew(@RequestBody News news) {
+    try {
+      News _news = newsRepository
+          .save(new News(news.getTitle(), news.getDescription_1(), news.getHeader(), news.getDescription_2(),  news.getDate(), news.getPhoto()));
+      return new ResponseEntity<>(_news, HttpStatus.CREATED);
+    } catch (Exception e) {
+      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
     @GetMapping("/news")
   public ResponseEntity<List<News>> getAllNews(@RequestParam(required = false) String title) {
     try {
@@ -49,5 +60,32 @@ public class NewController {
       return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
-    
+  
+  @PutMapping("/news/{id}")
+  public ResponseEntity<News> updateNew(@PathVariable("id") long id, @RequestBody News news) {
+    Optional<News> newsData = newsRepository.findById(id);
+    if (newsData.isPresent()) {
+      News _news = newsData.get();
+      _news.setTitle(news.getTitle());
+      _news.setDescription_1(news.getDescription_1());
+      _news.setHeader(news.getHeader());
+      _news.setDescription_2(news.getDescription_2());
+      _news.setDate(news.getDate());
+      _news.setPhoto(news.getPhoto());
+      return new ResponseEntity<>(newsRepository.save(_news), HttpStatus.OK);
+    } else {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @DeleteMapping("/news/{id}")
+  public ResponseEntity<HttpStatus> deleteNew(@PathVariable("id") long id) {
+    try {
+      newsRepository.deleteById(id);
+      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    } catch (Exception e) {
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
 }

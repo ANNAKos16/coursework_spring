@@ -13,6 +13,14 @@ class NewsDataService {
     return http.post("/news", data);
   }
 
+  update(id, data) {
+    return http.put(`/news/${id}`, data);
+  }
+
+  delete(id) {
+    return http.delete(`/news/${id}`);
+  }
+
 }
 
 export default new NewsDataService();
